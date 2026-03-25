@@ -1,1 +1,1 @@
-print(int("99", 8))
+raise Exception()
