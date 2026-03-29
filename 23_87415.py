@@ -1,37 +1,41 @@
-from collections import defaultdict
+# Исполнитель преобразует число на экране. У исполнителя есть две команды, которые обозначены латинскими буквами.
+# 
+# A.  Вычесть 2
+# 
+# B.  Поменять местами
+# 
+# Первая команда уменьшает число на экране на 2, вторая команда меняет разряды десятков и единиц в числе местами,
+# причём она применяется только к числам, у которых цифра в разряде единиц меньше цифры в разряде десятков.
+# Программа для исполнителя  — это последовательность команд.
+# 
+# Сколько существует программ, для которых при исходном числе 57 результатом является число 13?
+# 
+# Траектория вычислений программы  — это последовательность результатов выполнения всех команд программы.
+# 
+# Например, для программы AAB при исходном числе 24 траектория состоит из чисел 22, 20, 2.
+
+# число способов попасть из x в y
+def change(x):
+    e = x % 10
+    d = x // 10
+
+    if e < d:
+        return 10 * e + d
+    else:
+        return 10 * d + e
 
 
-def count_paths(start, target):
-    # paths[n] = количество программ, приводящих к n, не проходя через target раньше
-    current = defaultdict(int)
-    current[start] = 1
-    total = 0
 
-    for _ in range(200):
-        next_level = defaultdict(int)
-        for num, ways in current.items():
-            for cmd in ['A', 'B']:
-                if cmd == 'A':
-                    res = num - 2
-                    if res < 0:
-                        continue
-                else:
-                    tens, ones = num // 10, num % 10
-                    if ones < tens:
-                        res = ones * 10 + tens
-                    else:
-                        continue
-
-                if res == target:
-                    total += ways
-                else:
-                    next_level[res] += ways
-
-        current = next_level
-        if not current:
-            break
-
-    return total
+def f(x, y): # x - текущее число, y - цель
+    if x < y:
+        return 0
+    if x == y:
+        return 1
+    else:
+        if x % 10 < x // 10:
+            return f(x - 2, y) + f(change(x), y)
+        else:
+            return f(x - 2, y)
 
 
-print(count_paths(57, 13))
+print(f(57, 13))
