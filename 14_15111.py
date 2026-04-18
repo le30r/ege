@@ -7,5 +7,4 @@ x_5 = ""
 while x != 0:
     x_5 += str(x % 5)
     x = x // 5
-x_5 = x_5[::-1]
 print(x_5.count("4"))
